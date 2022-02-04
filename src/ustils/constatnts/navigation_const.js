@@ -1,0 +1,14 @@
+export const SIGN_UP_SCREEN = 'SIGN_UP';
+export const RESTORE_PASSWORD_SCREEN = 'RESTORE_PASSWORD';
+export const LOGIN_SCREEN = 'LOGIN';
+export const USER_PROFILE_SCREEN = 'USER_PROFILE';
+export const CREATE_POST_SCREEN = 'CREATE_POST';
+export const CHANGE_PROFILE_SCREEN = 'CHANGE_PROFILE';
+export const USERS_LIST_SCREEN = 'USERS_LIST';
+export const NEWS_SCREEN = 'NEWS';
+
+export const TABS = {
+  HOME: 'HOME_TAB',
+  NEWS: 'NEWS_TAB',
+  USERS_LIST: 'USERS_LIST_TAB',
+};
