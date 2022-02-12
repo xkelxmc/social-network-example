@@ -1,6 +1,11 @@
 import React from 'react';
 import {Text} from 'react-native';
+import {MainLayout} from '../layouts/MainLayout';
 
 export const CreatePostScreen = () => {
-  return <Text>CreatePostScreen</Text>;
+  return (
+    <MainLayout>
+      <Text>CreatePostScreen</Text>
+    </MainLayout>
+  );
 };

@@ -1,6 +1,11 @@
 import React from 'react';
 import {Text} from 'react-native';
+import {MainLayout} from '../layouts/MainLayout';
 
 export const NewsScreen = () => {
-  return <Text>NewsScreen</Text>;
+  return (
+    <MainLayout>
+      <Text>NewsScreen</Text>
+    </MainLayout>
+  );
 };

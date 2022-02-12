@@ -1,11 +1,11 @@
 import React from 'react';
 import {Button, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   LOGIN_SCREEN,
   RESTORE_PASSWORD_SCREEN,
 } from '../ustils/constatnts/navigation_const';
+import {MainLayout} from '../layouts/MainLayout';
 
 export const SignUpScreen = () => {
   const navigation = useNavigation();
@@ -15,28 +15,19 @@ export const SignUpScreen = () => {
   };
 
   const goToRestorePassword = () => {
-    navigation.navigate({name: RESTORE_PASSWORD_SCREEN, key: 1});
-  };
-  const goToRestorePassword2 = () => {
-    navigation.navigate({name: RESTORE_PASSWORD_SCREEN, key: 2});
+    navigation.navigate(RESTORE_PASSWORD_SCREEN);
   };
 
   return (
-    <SafeAreaView
-      style={{backgroundColor: 'blue', flex: 1}}
-      edges={['bottom', 'left', 'right']}>
-      <View style={{backgroundColor: 'yellow', flex: 1}}>
+    <MainLayout safeBottom>
+      <View>
         <Text>SignUpScreen</Text>
         <Button title={'Go to login!'} onPress={goToLogin} />
         <Button
           title={'Go to restore password!'}
           onPress={goToRestorePassword}
         />
-        <Button
-          title={'Go to restore password2!'}
-          onPress={goToRestorePassword2}
-        />
       </View>
-    </SafeAreaView>
+    </MainLayout>
   );
 };

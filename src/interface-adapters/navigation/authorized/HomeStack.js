@@ -8,26 +8,47 @@ import {
 import {UserProfileScreen} from '../../../screens/UserProfileScreen';
 import {CreatePostScreen} from '../../../screens/CreatePostScreen';
 import {ChangeProfileScreen} from '../../../screens/ChangeProfileScreen';
+import {useScreenOptions} from '../ui/useScreenOptions';
+import {useTranslation} from 'react-i18next';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HomeStack = createNativeStackNavigator();
 
 export const HomeStackScreens = () => {
+  const {t} = useTranslation();
+  const screenOptions = useScreenOptions();
+
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator screenOptions={screenOptions}>
       <HomeStack.Screen
         name={USER_PROFILE_SCREEN}
         component={UserProfileScreen}
         options={{
-          title: 'Моя страница',
+          title: t('screens.homeStack.myPage.title'),
         }}
       />
       <HomeStack.Screen
         name={CREATE_POST_SCREEN}
         component={CreatePostScreen}
+        options={{
+          headerRight: () => {
+            return (
+              <MaterialCommunityIcons
+                name={'checkbox-marked'}
+                size={24}
+                color={'#fff'}
+              />
+            );
+          },
+          title: t('screens.homeStack.createPost.title'),
+        }}
       />
       <HomeStack.Screen
         name={CHANGE_PROFILE_SCREEN}
         component={ChangeProfileScreen}
+        options={{
+          title: t('screens.homeStack.changeProfile.title'),
+        }}
       />
     </HomeStack.Navigator>
   );

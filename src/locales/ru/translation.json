@@ -1,0 +1,45 @@
+{
+  "app_name": "test ru",
+  "tabs": {
+    "myPage": "Моя странца",
+    "news": "Лента",
+    "usersList": "Пользователи"
+  },
+  "screens": {
+    "homeStack": {
+      "myPage": {
+        "title": "Моя странца"
+      },
+      "createPost": {
+        "title": "Новый пост"
+      },
+      "changeProfile": {
+        "title": "Изменить профиль"
+      }
+    },
+    "newsStack": {
+      "news": {
+        "title": "Лента"
+      }
+    },
+    "usersStack": {
+      "usersList": {
+        "title": "Список пользователей"
+      },
+      "userPage": {
+        "title": "Пользователь"
+      }
+    },
+    "authStack": {
+      "signUp": {
+        "title": "Регистрация"
+      },
+      "login": {
+        "title": "Авторизация"
+      },
+      "restorePassword": {
+        "title": "Востановление пароля"
+      }
+    }
+  }
+}

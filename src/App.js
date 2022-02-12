@@ -1,19 +1,35 @@
-import React from 'react';
 import type {Node} from 'react';
-import {StatusBar, useColorScheme} from 'react-native';
+import React from 'react';
+import {StatusBar} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import {Navigation} from './interface-adapters/navigation';
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+import './services/i18n';
+import {useLanguage} from './services/languageService';
+import {ThemeProvider, useTheme} from './services/themeService';
+
+const App = () => {
+  const {isDarkMode} = useTheme();
 
   return (
-    <SafeAreaProvider>
+    <>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Navigation />
-    </SafeAreaProvider>
+    </>
   );
 };
 
-export default App;
+const AppContainer: () => Node = () => {
+  useLanguage();
+
+  return (
+    <ThemeProvider>
+      <SafeAreaProvider>
+        <App />
+      </SafeAreaProvider>
+    </ThemeProvider>
+  );
+};
+
+export default AppContainer;

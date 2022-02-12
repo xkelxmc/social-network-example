@@ -1,0 +1,45 @@
+{
+  "app_name": "test en",
+  "tabs": {
+    "myPage": "My page",
+    "news": "News",
+    "usersList": "Users list"
+  },
+  "screens": {
+    "homeStack": {
+      "myPage": {
+        "title": "My page"
+      },
+      "createPost": {
+        "title": "Create new post"
+      },
+      "changeProfile": {
+        "title": "Change profile"
+      }
+    },
+    "newsStack": {
+      "news": {
+        "title": "News"
+      }
+    },
+    "usersStack": {
+      "usersList": {
+        "title": "Users list"
+      },
+      "userPage": {
+        "title": "User"
+      }
+    },
+    "authStack": {
+      "signUp": {
+        "title": "Sing Up"
+      },
+      "login": {
+        "title": "Login"
+      },
+      "restorePassword": {
+        "title": "Restore password"
+      }
+    }
+  }
+}

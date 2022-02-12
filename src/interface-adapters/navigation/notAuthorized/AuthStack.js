@@ -8,27 +8,36 @@ import {
 import {SignUpScreen} from '../../../screens/SignUpScreen';
 import {LoginScreen} from '../../../screens/LoginScreen';
 import {RestorePasswordScreen} from '../../../screens/RestorePasswordScreen';
+import {useScreenOptions} from '../ui/useScreenOptions';
+import {useTranslation} from 'react-i18next';
 
 const AuthStack = createNativeStackNavigator();
 
 export const AuthStackScreens = () => {
+  const screenOptions = useScreenOptions();
+  const {t} = useTranslation();
+
   return (
-    <AuthStack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#f4511e',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}>
-      <AuthStack.Screen name={SIGN_UP_SCREEN} component={SignUpScreen} />
+    <AuthStack.Navigator screenOptions={screenOptions}>
+      <AuthStack.Screen
+        name={SIGN_UP_SCREEN}
+        component={SignUpScreen}
+        options={{
+          title: t('screens.authStack.signUp.title'),
+        }}
+      />
       <AuthStack.Screen
         name={RESTORE_PASSWORD_SCREEN}
         component={RestorePasswordScreen}
+        options={{
+          title: t('screens.authStack.restorePassword.title'),
+        }}
       />
-      <AuthStack.Screen name={LOGIN_SCREEN} component={LoginScreen} />
+      <AuthStack.Screen
+        name={LOGIN_SCREEN}
+        component={LoginScreen}
+        options={{title: t('screens.authStack.login.title')}}
+      />
     </AuthStack.Navigator>
   );
 };

@@ -5,6 +5,7 @@ import {
   RESTORE_PASSWORD_SCREEN,
   SIGN_UP_SCREEN,
 } from '../ustils/constatnts/navigation_const';
+import {MainLayout} from '../layouts/MainLayout';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -18,10 +19,15 @@ export const LoginScreen = () => {
   };
 
   return (
-    <View>
-      <Text>LoginScreen</Text>
-      <Button title={'Go to sign up!'} onPress={goToSignUp} />
-      <Button title={'Go to restore password!'} onPress={goToRestorePassword} />
-    </View>
+    <MainLayout safeBottom>
+      <View>
+        <Text>LoginScreen</Text>
+        <Button title={'Go to sign up!'} onPress={goToSignUp} />
+        <Button
+          title={'Go to restore password!'}
+          onPress={goToRestorePassword}
+        />
+      </View>
+    </MainLayout>
   );
 };

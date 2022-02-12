@@ -4,7 +4,7 @@ import {AuthorizedNavigation} from './authorized/Authorized';
 import {NotAuthorizedNavigation} from './notAuthorized/NotAuthorized';
 
 const NavigationContent = () => {
-  const isLogin = false;
+  const isLogin = true;
 
   if (isLogin) {
     return <AuthorizedNavigation />;
