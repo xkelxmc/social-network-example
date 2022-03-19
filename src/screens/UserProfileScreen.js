@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, TouchableOpacity, View, StyleSheet, Button} from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import {Button} from '../components/Button';
 import {useTranslation} from 'react-i18next';
 import {MainLayout} from '../layouts/MainLayout';
 import {useNavigation} from '@react-navigation/native';
