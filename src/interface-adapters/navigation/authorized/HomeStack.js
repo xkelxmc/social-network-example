@@ -31,15 +31,6 @@ export const HomeStackScreens = () => {
         name={CREATE_POST_SCREEN}
         component={CreatePostScreen}
         options={{
-          headerRight: () => {
-            return (
-              <MaterialCommunityIcons
-                name={'checkbox-marked'}
-                size={24}
-                color={'#fff'}
-              />
-            );
-          },
           title: t('screens.homeStack.createPost.title'),
         }}
       />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import {Button} from '../components/Button';
 import {useTranslation} from 'react-i18next';
@@ -12,12 +12,32 @@ import {CheckBox} from '../components/CheckBox';
 import {useTheme} from '../services/themeService';
 import auth from '@react-native-firebase/auth';
 import {useAuthContext} from '../services/authService';
+import {userCollection} from '../interface-adapters/db/collections';
 
 export const UserProfileScreen = () => {
   const {t, i18n} = useTranslation();
   const {isDarkMode} = useTheme();
-  const navigation = useNavigation();
   const {user} = useAuthContext();
+  const [userData, setUserData] = useState(null);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    userCollection
+      .doc(user.uid)
+      .get()
+      .then(documentSnapshot => {
+        console.log('User exists: ', documentSnapshot.exists);
+
+        if (documentSnapshot.exists) {
+          const data = documentSnapshot.data();
+          navigation.setOptions({
+            headerTitle: data.email,
+          });
+          console.log('User data: ', data);
+          setUserData(data);
+        }
+      });
+  }, []);
 
   const logout = () => {
     auth()
@@ -58,7 +78,13 @@ export const UserProfileScreen = () => {
 
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text>Welcome {user.email}</Text>
+          {userData && (
+            <Text>
+              {userData.name} {userData.surname}
+            </Text>
+          )}
         </View>
+
         <TouchableOpacity onPress={logout} style={Styles.button}>
           <Text style={{color: '#fff'}}>Logout</Text>
         </TouchableOpacity>
