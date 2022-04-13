@@ -2,20 +2,25 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {AuthorizedNavigation} from './authorized/Authorized';
 import {NotAuthorizedNavigation} from './notAuthorized/NotAuthorized';
+import {AuthProvider, useAuthContext} from '../../services/authService';
 
 const NavigationContent = () => {
-  const isLogin = true;
-
-  if (isLogin) {
-    return <AuthorizedNavigation />;
+  const {initializing, user} = useAuthContext();
+  if (initializing) {
+    return null;
   }
-  return <NotAuthorizedNavigation />;
+  if (!user) {
+    return <NotAuthorizedNavigation />;
+  }
+  return <AuthorizedNavigation />;
 };
 
 export const Navigation = () => {
   return (
     <NavigationContainer>
-      <NavigationContent />
+      <AuthProvider>
+        <NavigationContent />
+      </AuthProvider>
     </NavigationContainer>
   );
 };

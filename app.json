@@ -1,4 +1,9 @@
 {
   "name": "social",
-  "displayName": "social"
+  "displayName": "social",
+  "plugins": [
+    "@react-native-firebase/app",
+    "@react-native-firebase/perf",
+    "@react-native-firebase/crashlytics"
+  ]
 }

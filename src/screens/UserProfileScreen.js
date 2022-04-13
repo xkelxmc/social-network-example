@@ -10,11 +10,20 @@ import {
 } from '../ustils/constatnts/navigation_const';
 import {CheckBox} from '../components/CheckBox';
 import {useTheme} from '../services/themeService';
+import auth from '@react-native-firebase/auth';
+import {useAuthContext} from '../services/authService';
 
 export const UserProfileScreen = () => {
   const {t, i18n} = useTranslation();
   const {isDarkMode} = useTheme();
   const navigation = useNavigation();
+  const {user} = useAuthContext();
+
+  const logout = () => {
+    auth()
+      .signOut()
+      .then(() => console.log('User signed out!'));
+  };
 
   const goToChangeProfile = () => {
     navigation.navigate(CHANGE_PROFILE_SCREEN);
@@ -46,6 +55,13 @@ export const UserProfileScreen = () => {
             <Text style={{color: '#fff'}}>RU</Text>
           </TouchableOpacity>
         </View>
+
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text>Welcome {user.email}</Text>
+        </View>
+        <TouchableOpacity onPress={logout} style={Styles.button}>
+          <Text style={{color: '#fff'}}>Logout</Text>
+        </TouchableOpacity>
         <Button title={'Go to change profile!'} onPress={goToChangeProfile} />
         <Button title={'Go to add post!'} onPress={goToAddPost} />
         <View style={{marginTop: 50, marginHorizontal: 20}}>
