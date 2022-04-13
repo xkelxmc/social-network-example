@@ -12,7 +12,7 @@ export const AuthProvider = ({children}) => {
   // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
-    AsyncStorage.setItem('user', user);
+    AsyncStorage.setItem('user', JSON.stringify(user));
     if (initializing) {
       setInitializing(false);
     }
@@ -21,7 +21,9 @@ export const AuthProvider = ({children}) => {
   useEffect(() => {
     const getAuth = async () => {
       const localUser = await AsyncStorage.getItem('user');
-      console.log('localUser', localUser);
+      if (localUser) {
+        console.log('localUser', JSON.parse(localUser));
+      }
     };
     getAuth();
   }, []);
