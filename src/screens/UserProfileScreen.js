@@ -1,49 +1,56 @@
-import React, {useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {Text, View, StyleSheet, FlatList, Pressable} from 'react-native';
 import {Button} from '../components/Button';
 import {useTranslation} from 'react-i18next';
 import {MainLayout} from '../layouts/MainLayout';
-import {useNavigation} from '@react-navigation/native';
 import {
   CHANGE_PROFILE_SCREEN,
   CREATE_POST_SCREEN,
 } from '../ustils/constatnts/navigation_const';
-import {CheckBox} from '../components/CheckBox';
 import {useTheme} from '../services/themeService';
-import auth from '@react-native-firebase/auth';
+import {useNavigation} from '@react-navigation/native';
 import {useAuthContext} from '../services/authService';
-import {userCollection} from '../interface-adapters/db/collections';
+import {UserContainer} from '../components/UserContainer';
+import {postCollection} from '../interface-adapters/db/collections';
+import {shadows} from '../ustils/styles';
 
 export const UserProfileScreen = () => {
   const {t, i18n} = useTranslation();
   const {isDarkMode} = useTheme();
-  const {user} = useAuthContext();
-  const [userData, setUserData] = useState(null);
   const navigation = useNavigation();
+  const {user, userData} = useAuthContext();
+  const [posts, setPosts] = React.useState([]);
+
+  // useEffect(() => {
+  //   postCollection
+  //     .where('userId', '==', user.uid)
+  //     // .orderBy('createdAt', 'desc')
+  //     .get()
+  //     .then(querySnapshot => {
+  //       const list = [];
+  //       querySnapshot.forEach(postSnapshot => {
+  //         list.push({id: postSnapshot.id, ...postSnapshot.data()});
+  //       });
+  //       console.log(list);
+  //       setPosts(list);
+  //     });
+  // }, []);
 
   useEffect(() => {
-    userCollection
-      .doc(user.uid)
-      .get()
-      .then(documentSnapshot => {
-        console.log('User exists: ', documentSnapshot.exists);
-
-        if (documentSnapshot.exists) {
-          const data = documentSnapshot.data();
-          navigation.setOptions({
-            headerTitle: data.email,
+    const subscription = postCollection
+      .where('userId', '==', user.uid)
+      // .orderBy('createdAt', 'desc')
+      .onSnapshot(querySnapshot => {
+        if (querySnapshot && querySnapshot.size > 0) {
+          const list = [];
+          querySnapshot.forEach(postSnapshot => {
+            list.push({id: postSnapshot.id, ...postSnapshot.data()});
           });
-          console.log('User data: ', data);
-          setUserData(data);
+          setPosts(list);
         }
       });
+    return () => subscription();
   }, []);
-
-  const logout = () => {
-    auth()
-      .signOut()
-      .then(() => console.log('User signed out!'));
-  };
 
   const goToChangeProfile = () => {
     navigation.navigate(CHANGE_PROFILE_SCREEN);
@@ -52,68 +59,59 @@ export const UserProfileScreen = () => {
     navigation.navigate(CREATE_POST_SCREEN);
   };
 
+  const renderItem = ({item}) => (
+    <View
+      style={{
+        marginBottom: 12,
+        padding: 8,
+        backgroundColor: '#fff',
+        borderRadius: 13,
+        ...shadows('#000', 4, 4, 5, 0.2),
+      }}>
+      <Text style={{fontSize: 22}}>{item.title}</Text>
+      <Text style={{fontSize: 16}}>{item.content}</Text>
+    </View>
+  );
+
   return (
-    <MainLayout scrollEnabled>
-      <View>
-        <Text style={{color: isDarkMode ? '#ffffff' : '#000000'}}>
-          UserProfileScreen{' '}
-          <Text style={{fontWeight: 'bold'}}>{t('app_name')}</Text>
-        </Text>
-        <View
+    <MainLayout>
+      {userData && (
+        <View>
+          <UserContainer user={userData}>
+            <Button
+              title={t('screens.homeStack.myPage.changeProfile')}
+              onPress={goToChangeProfile}
+              small
+            />
+          </UserContainer>
+        </View>
+      )}
+      <View style={styles.container}>
+        <Button
+          title={t('screens.homeStack.myPage.addPost')}
+          onPress={goToAddPost}
+        />
+        <FlatList
+          renderItem={renderItem}
+          data={posts}
           style={{
-            flexDirection: 'row',
-            margin: 10,
-          }}>
-          <TouchableOpacity
-            onPress={() => i18n.changeLanguage('en')}
-            style={Styles.button}>
-            <Text style={{color: '#fff'}}>EN</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => i18n.changeLanguage('ru')}
-            style={Styles.button}>
-            <Text style={{color: '#fff'}}>RU</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>Welcome {user.email}</Text>
-          {userData && (
-            <Text>
-              {userData.name} {userData.surname}
-            </Text>
-          )}
-        </View>
-
-        <TouchableOpacity onPress={logout} style={Styles.button}>
-          <Text style={{color: '#fff'}}>Logout</Text>
-        </TouchableOpacity>
-        <Button title={'Go to change profile!'} onPress={goToChangeProfile} />
-        <Button title={'Go to add post!'} onPress={goToAddPost} />
-        <View style={{marginTop: 50, marginHorizontal: 20}}>
-          <CheckBox text={'1. Безопастные области (Safe Area)'} checked />
-          <CheckBox text={'2. Общай шаблон экрана'} checked />
-          <CheckBox text={'3. Подключение иконок'} checked />
-          <CheckBox
-            text={'4. Кастомизирование шапки (Screen Options)'}
-            checked
-          />
-          <CheckBox
-            text={'5. Мультиязычность (Подключение локализации)'}
-            checked
-          />
-          <CheckBox text={'6. Темная тема (Определение, изменение темы)'} />
-        </View>
+            flex: 1,
+            marginTop: 12,
+            marginLeft: -12,
+            marginRight: -12,
+          }}
+          contentContainerStyle={{
+            paddingHorizontal: 12,
+          }}
+        />
       </View>
     </MainLayout>
   );
 };
 
-const Styles = StyleSheet.create({
-  button: {
-    backgroundColor: '#2F80ED',
-    padding: 10,
-    borderRadius: 10,
-    margin: 10,
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    flex: 1,
   },
 });

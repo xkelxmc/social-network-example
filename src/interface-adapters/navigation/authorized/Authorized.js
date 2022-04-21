@@ -6,6 +6,7 @@ import {NewsStackScreens} from './NewsStack';
 import {UsersStackScreen} from './UsersStack';
 import {useTranslation} from 'react-i18next';
 import {useTabsOptions} from '../ui/useTabsOptions';
+import {SettingsScreen} from '../../../screens/SettingsScreen';
 
 export const AuthorizedNavigation = () => {
   return <TabScreens />;
@@ -33,6 +34,11 @@ const TabScreens = () => {
         name={TABS.USERS_LIST}
         component={UsersStackScreen}
         options={{title: t('tabs.usersList')}}
+      />
+      <Tab.Screen
+        name={TABS.SETTINGS}
+        component={SettingsScreen}
+        options={{title: t('tabs.settings')}}
       />
     </Tab.Navigator>
   );

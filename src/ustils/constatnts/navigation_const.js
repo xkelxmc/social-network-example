@@ -11,4 +11,5 @@ export const TABS = {
   HOME: 'HOME_TAB',
   NEWS: 'NEWS_TAB',
   USERS_LIST: 'USERS_LIST_TAB',
+  SETTINGS: 'SETTINGS',
 };

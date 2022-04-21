@@ -14,6 +14,8 @@ export const getTabsOptions = () => {
         iconName = focused ? 'post' : 'post-outline';
       } else if (route.name === TABS.USERS_LIST) {
         iconName = focused ? 'account-multiple' : 'account-multiple-outline';
+      } else if (route.name === TABS.SETTINGS) {
+        iconName = focused ? 'account-multiple' : 'account-multiple-outline';
       }
 
       // You can return any component that you like here!

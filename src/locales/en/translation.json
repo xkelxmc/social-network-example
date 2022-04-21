@@ -3,12 +3,15 @@
   "tabs": {
     "myPage": "My page",
     "news": "News",
-    "usersList": "Users list"
+    "usersList": "Users list",
+    "settings": "Settings"
   },
   "screens": {
     "homeStack": {
       "myPage": {
-        "title": "My page"
+        "title": "My page",
+        "changeProfile": "Change",
+        "addPost": "Add Post"
       },
       "createPost": {
         "title": "Create new post"

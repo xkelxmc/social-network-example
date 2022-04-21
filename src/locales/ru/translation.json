@@ -3,12 +3,15 @@
   "tabs": {
     "myPage": "Моя странца",
     "news": "Лента",
-    "usersList": "Пользователи"
+    "usersList": "Пользователи",
+    "settings": "Настройки"
   },
   "screens": {
     "homeStack": {
       "myPage": {
-        "title": "Моя странца"
+        "title": "Моя странца",
+        "changeProfile": "Редактировать",
+        "addPost": "Написать пост"
       },
       "createPost": {
         "title": "Новый пост"
