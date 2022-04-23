@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Text, View, StyleSheet, FlatList, Pressable} from 'react-native';
+import {Text, View, StyleSheet, FlatList} from 'react-native';
 import {Button} from '../components/Button';
 import {useTranslation} from 'react-i18next';
 import {MainLayout} from '../layouts/MainLayout';
@@ -7,7 +7,6 @@ import {
   CHANGE_PROFILE_SCREEN,
   CREATE_POST_SCREEN,
 } from '../ustils/constatnts/navigation_const';
-import {useTheme} from '../services/themeService';
 import {useNavigation} from '@react-navigation/native';
 import {useAuthContext} from '../services/authService';
 import {UserContainer} from '../components/UserContainer';
@@ -15,31 +14,15 @@ import {postCollection} from '../interface-adapters/db/collections';
 import {shadows} from '../ustils/styles';
 
 export const UserProfileScreen = () => {
-  const {t, i18n} = useTranslation();
-  const {isDarkMode} = useTheme();
+  const {t} = useTranslation();
   const navigation = useNavigation();
   const {user, userData} = useAuthContext();
   const [posts, setPosts] = React.useState([]);
 
-  // useEffect(() => {
-  //   postCollection
-  //     .where('userId', '==', user.uid)
-  //     // .orderBy('createdAt', 'desc')
-  //     .get()
-  //     .then(querySnapshot => {
-  //       const list = [];
-  //       querySnapshot.forEach(postSnapshot => {
-  //         list.push({id: postSnapshot.id, ...postSnapshot.data()});
-  //       });
-  //       console.log(list);
-  //       setPosts(list);
-  //     });
-  // }, []);
-
   useEffect(() => {
     const subscription = postCollection
       .where('userId', '==', user.uid)
-      // .orderBy('createdAt', 'desc')
+      .orderBy('createdAt', 'desc')
       .onSnapshot(querySnapshot => {
         if (querySnapshot && querySnapshot.size > 0) {
           const list = [];

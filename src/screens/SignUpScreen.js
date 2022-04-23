@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Button, TextInput, View, StyleSheet} from 'react-native';
+import {
+  Button,
+  TextInput,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  Text,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {
   LOGIN_SCREEN,
@@ -21,6 +28,8 @@ const FORM_INITIAL_VALUE = {
 export const SignUpScreen = () => {
   const navigation = useNavigation();
   const [form, setForm] = useState(FORM_INITIAL_VALUE);
+  const [authState, setAuthState] = useState('default');
+  const [error, setError] = useState(null);
 
   const onChange = name => text => {
     setForm({...form, [name]: text});
@@ -50,6 +59,7 @@ export const SignUpScreen = () => {
     if (!checkFormComplete()) {
       return;
     }
+    setAuthState('loading');
     auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then(({user}) => {
@@ -58,19 +68,21 @@ export const SignUpScreen = () => {
           name: form.name,
           surname: form.surname,
         });
+        setAuthState('success');
         setForm(FORM_INITIAL_VALUE);
         console.log('User account created & signed in!');
       })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
+      .catch(err => {
+        setAuthState('error');
+        if (err.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!');
         }
 
-        if (error.code === 'auth/invalid-email') {
+        if (err.code === 'auth/invalid-email') {
           console.log('That email address is invalid!');
         }
 
-        console.error(error);
+        setError(err);
       });
   };
 
@@ -83,6 +95,11 @@ export const SignUpScreen = () => {
             onChangeText={onChange('email')}
             placeholder="Email"
             style={styles.input}
+            maxLength={100}
+            autoCorrect={false}
+            autoCapitalize={'none'}
+            keyboardType={'email-address'}
+            editable={authState === 'default' || authState === 'error'}
           />
           <TextInput
             value={form.password}
@@ -90,6 +107,10 @@ export const SignUpScreen = () => {
             placeholder="Password"
             style={styles.input}
             secureTextEntry
+            maxLength={100}
+            autoCorrect={false}
+            autoCapitalize={'none'}
+            editable={authState === 'default' || authState === 'error'}
           />
           <TextInput
             value={form.confirmPassword}
@@ -97,24 +118,44 @@ export const SignUpScreen = () => {
             placeholder="Password Confirm"
             style={styles.input}
             secureTextEntry
+            maxLength={100}
+            autoCorrect={false}
+            autoCapitalize={'none'}
+            editable={authState === 'default' || authState === 'error'}
           />
           <TextInput
             value={form.name}
             onChangeText={onChange('name')}
             placeholder="Name"
             style={styles.input}
+            maxLength={100}
+            autoCorrect={false}
+            editable={authState === 'default' || authState === 'error'}
           />
           <TextInput
             value={form.surname}
             onChangeText={onChange('surname')}
             placeholder="Surname"
             style={styles.input}
+            maxLength={100}
+            autoCorrect={false}
+            editable={authState === 'default' || authState === 'error'}
           />
           <Button
             title={'Sign Up!'}
-            disabled={!checkFormComplete()}
+            disabled={
+              !checkFormComplete() ||
+              authState === 'success' ||
+              authState === 'loading'
+            }
             onPress={signUp}
           />
+          {authState === 'loading' && (
+            <View style={{justifyContent: 'center'}}>
+              <ActivityIndicator />
+            </View>
+          )}
+          {authState === 'error' && <Text style={{color: 'red'}}>{error}</Text>}
         </View>
         <View>
           <Button title={'Go to login!'} onPress={goToLogin} />

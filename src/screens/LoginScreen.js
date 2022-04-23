@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {
   RESTORE_PASSWORD_SCREEN,
@@ -13,6 +20,8 @@ export const LoginScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [authState, setAuthState] = useState('default');
+  const [error, setError] = useState(null);
 
   const goToSignUp = () => {
     navigation.navigate(SIGN_UP_SCREEN);
@@ -23,14 +32,22 @@ export const LoginScreen = () => {
   };
 
   const login = () => {
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('Login successful!');
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    if (email?.length >= 8 && password?.length >= 8) {
+      setAuthState('loading');
+      auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          setAuthState('success');
+          console.log('Login successful!');
+        })
+        .catch(err => {
+          setAuthState('error');
+          setError(err.message);
+        });
+    } else {
+      setAuthState('error');
+      setError('Email and password mast have 8 or many characters');
+    }
   };
 
   return (
@@ -42,15 +59,34 @@ export const LoginScreen = () => {
             onChangeText={setEmail}
             placeholder="Email"
             style={styles.input}
+            maxLength={100}
+            autoCorrect={false}
+            autoCapitalize={'none'}
+            keyboardType={'email-address'}
+            editable={authState === 'default' || authState === 'error'}
           />
           <TextInput
             value={password}
             onChangeText={setPassword}
             placeholder="Password"
             style={styles.input}
+            maxLength={100}
+            autoCorrect={false}
+            autoCapitalize={'none'}
+            editable={authState === 'default' || authState === 'error'}
             secureTextEntry
           />
-          <Button title={'Login!'} onPress={login} />
+          <Button
+            title={'Login!'}
+            onPress={login}
+            disabled={authState === 'success' || authState === 'loading'}
+          />
+          {authState === 'loading' && (
+            <View style={{justifyContent: 'center'}}>
+              <ActivityIndicator />
+            </View>
+          )}
+          {authState === 'error' && <Text style={{color: 'red'}}>{error}</Text>}
         </View>
         <View>
           <Button title={'Go to sign up!'} onPress={goToSignUp} />
