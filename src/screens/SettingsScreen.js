@@ -16,7 +16,7 @@ export const SettingsScreen = () => {
   };
 
   return (
-    <MainLayout scrollEnabled>
+    <MainLayout scrollEnabled safeTop>
       <View
         style={{
           flexDirection: 'row',

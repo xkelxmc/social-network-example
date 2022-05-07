@@ -8,13 +8,9 @@ import {useTranslation} from 'react-i18next';
 import {useTabsOptions} from '../ui/useTabsOptions';
 import {SettingsScreen} from '../../../screens/SettingsScreen';
 
-export const AuthorizedNavigation = () => {
-  return <TabScreens />;
-};
-
 const Tab = createBottomTabNavigator();
 
-const TabScreens = () => {
+export const AuthorizedNavigation = () => {
   const {t} = useTranslation();
   const tabsScreenOptions = useTabsOptions();
 

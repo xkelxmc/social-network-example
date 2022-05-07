@@ -23,6 +23,7 @@ export const HomeStackScreens = () => {
       <HomeStack.Screen
         name={USER_PROFILE_SCREEN}
         component={UserProfileScreen}
+        initialParams={{isMe: true}}
         options={{
           title: t('screens.homeStack.myPage.title'),
         }}

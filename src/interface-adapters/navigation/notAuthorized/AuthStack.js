@@ -13,7 +13,7 @@ import {useTranslation} from 'react-i18next';
 
 const AuthStack = createNativeStackNavigator();
 
-export const AuthStackScreens = () => {
+export const NotAuthorizedNavigation = () => {
   const screenOptions = useScreenOptions();
   const {t} = useTranslation();
 

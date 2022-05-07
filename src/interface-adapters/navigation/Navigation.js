@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {AuthorizedNavigation} from './authorized/Authorized';
-import {NotAuthorizedNavigation} from './notAuthorized/NotAuthorized';
+import {NotAuthorizedNavigation} from './notAuthorized/AuthStack';
 import {AuthProvider, useAuthContext} from '../../services/authService';
 
 const NavigationContent = () => {

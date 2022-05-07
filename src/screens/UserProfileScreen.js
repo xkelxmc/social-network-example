@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {Text, View, StyleSheet, FlatList} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import {Button} from '../components/Button';
 import {useTranslation} from 'react-i18next';
 import {MainLayout} from '../layouts/MainLayout';
@@ -13,15 +19,21 @@ import {UserContainer} from '../components/UserContainer';
 import {postCollection} from '../interface-adapters/db/collections';
 import {shadows} from '../ustils/styles';
 
-export const UserProfileScreen = () => {
+export const UserProfileScreen = ({
+  route: {
+    params: {isMe, user},
+  },
+}) => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-  const {user, userData} = useAuthContext();
+  const {user: currentUser, userData} = useAuthContext();
   const [posts, setPosts] = React.useState([]);
+
+  console.log({isMe, user, currentUser, userData});
 
   useEffect(() => {
     const subscription = postCollection
-      .where('userId', '==', user.uid)
+      .where('userId', '==', isMe ? currentUser.uid : user.id)
       .orderBy('createdAt', 'desc')
       .onSnapshot(querySnapshot => {
         if (querySnapshot && querySnapshot.size > 0) {
@@ -58,22 +70,28 @@ export const UserProfileScreen = () => {
 
   return (
     <MainLayout>
-      {userData && (
-        <View>
-          <UserContainer user={userData}>
-            <Button
-              title={t('screens.homeStack.myPage.changeProfile')}
-              onPress={goToChangeProfile}
-              small
-            />
-          </UserContainer>
-        </View>
-      )}
+      <View>
+        {isMe &&
+          (userData ? (
+            <UserContainer user={userData}>
+              <Button
+                title={t('screens.homeStack.myPage.changeProfile')}
+                onPress={goToChangeProfile}
+                small
+              />
+            </UserContainer>
+          ) : (
+            <ActivityIndicator />
+          ))}
+        {!isMe && <UserContainer user={user} />}
+      </View>
       <View style={styles.container}>
-        <Button
-          title={t('screens.homeStack.myPage.addPost')}
-          onPress={goToAddPost}
-        />
+        {isMe && (
+          <Button
+            title={t('screens.homeStack.myPage.addPost')}
+            onPress={goToAddPost}
+          />
+        )}
         <FlatList
           renderItem={renderItem}
           data={posts}

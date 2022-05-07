@@ -27,6 +27,7 @@ export const UsersStackScreen = () => {
       <UsersStack.Screen
         name={USER_PROFILE_SCREEN}
         component={UserProfileScreen}
+        initialParams={{isMe: false}}
         options={{
           title: t('screens.usersStack.userPage.title'),
         }}

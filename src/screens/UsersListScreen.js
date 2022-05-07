@@ -3,10 +3,13 @@ import {ActivityIndicator, FlatList, Pressable, Text} from 'react-native';
 import {MainLayout} from '../layouts/MainLayout';
 import {userCollection} from '../interface-adapters/db/collections';
 import {UserBadge} from '../components/UserBadge';
+import {useNavigation} from '@react-navigation/native';
+import {USER_PROFILE_SCREEN} from '../ustils/constatnts/navigation_const';
 
 export const UsersListScreen = () => {
   const [usersList, setUsersList] = useState([]);
   const [state, setState] = useState('loading');
+  const navigation = useNavigation();
 
   const getUsersList = () => {
     userCollection.get().then(querySnapshot => {
@@ -29,7 +32,7 @@ export const UsersListScreen = () => {
   };
 
   const handlePressUser = user => () => {
-    console.log(user);
+    navigation.navigate(USER_PROFILE_SCREEN, {user});
   };
 
   const renderItem = ({item}) => (
